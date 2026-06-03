@@ -9,6 +9,7 @@
 ## Problem Statement
 
 Small clinics in India and across the world still manage patient queues with:
+
 - Paper tokens handed at reception
 - Staff manually calling out names or numbers
 - Patients with zero visibility into how long they'll wait
@@ -36,20 +37,21 @@ Small clinics in India and across the world still manage patient queues with:
 
 ## Tech Stack
 
-| Layer     | Technology              |
-|-----------|------------------------|
-| Frontend  | React 18 + Vite        |
-| Styling   | Tailwind CSS           |
-| Realtime  | Socket.IO (client)     |
-| Backend   | Node.js + Express      |
-| Database  | MongoDB + Mongoose     |
-| Realtime  | Socket.IO (server)     |
+| Layer    | Technology         |
+| -------- | ------------------ |
+| Frontend | React 18 + Vite    |
+| Styling  | Tailwind CSS       |
+| Realtime | Socket.IO (client) |
+| Backend  | Node.js + Express  |
+| Database | MongoDB + Mongoose |
+| Realtime | Socket.IO (server) |
 
 ---
 
 ## Setup Instructions
 
 ### Prerequisites
+
 - Node.js v18+
 - MongoDB (local or Atlas)
 
@@ -69,6 +71,7 @@ cd ../frontend && npm install
 ### 2. Configure Environment
 
 **Backend:**
+
 ```bash
 cd backend
 cp .env.example .env
@@ -76,6 +79,7 @@ cp .env.example .env
 ```
 
 **Frontend:**
+
 ```bash
 cd frontend
 cp .env.example .env
@@ -93,6 +97,7 @@ cd frontend && npm run dev
 ```
 
 Open:
+
 - Receptionist: http://localhost:5173/receptionist
 - Patient Display: http://localhost:5173/display
 
@@ -127,29 +132,29 @@ Open:
 
 ## API Overview
 
-| Method | Endpoint                    | Description                    |
-|--------|-----------------------------|--------------------------------|
-| GET    | `/api/queue`                | Get full today's queue state   |
-| POST   | `/api/queue/add`            | Add patient `{ patientName }`  |
-| POST   | `/api/queue/call-next`      | Call next waiting patient      |
-| POST   | `/api/queue/complete`       | Complete current consultation  |
-| GET    | `/api/settings`             | Get clinic settings            |
-| PATCH  | `/api/settings/avg-minutes` | Update default avg minutes     |
-| GET    | `/health`                   | Health check                   |
+| Method | Endpoint                    | Description                   |
+| ------ | --------------------------- | ----------------------------- |
+| GET    | `/api/queue`                | Get full today's queue state  |
+| POST   | `/api/queue/add`            | Add patient `{ patientName }` |
+| POST   | `/api/queue/call-next`      | Call next waiting patient     |
+| POST   | `/api/queue/complete`       | Complete current consultation |
+| GET    | `/api/settings`             | Get clinic settings           |
+| PATCH  | `/api/settings/avg-minutes` | Update default avg minutes    |
+| GET    | `/health`                   | Health check                  |
 
 ---
 
 ## Socket Events
 
-| Event                    | Direction           | Payload                         |
-|--------------------------|---------------------|---------------------------------|
-| `queue_updated`          | Server → All        | Full queue payload              |
-| `patient_added`          | Server → All        | `{ patient, queue }`           |
-| `token_called`           | Server → All        | `{ patient, queue }`           |
-| `consultation_started`   | Server → All        | `{ patient }`                  |
-| `consultation_completed` | Server → All        | `{ patient, queue }`           |
-| `ping_check`             | Client → Server     | —                               |
-| `pong_check`             | Server → Client     | `{ ts }`                       |
+| Event                    | Direction       | Payload              |
+| ------------------------ | --------------- | -------------------- |
+| `queue_updated`          | Server → All    | Full queue payload   |
+| `patient_added`          | Server → All    | `{ patient, queue }` |
+| `token_called`           | Server → All    | `{ patient, queue }` |
+| `consultation_started`   | Server → All    | `{ patient }`        |
+| `consultation_completed` | Server → All    | `{ patient, queue }` |
+| `ping_check`             | Client → Server | —                    |
+| `pong_check`             | Server → Client | `{ ts }`             |
 
 ---
 
@@ -158,18 +163,19 @@ Open:
 ClinIQ uses **dynamic, data-driven wait time** — not hardcoded estimates.
 
 ```
-Average Consultation Time = 
-  Sum of all completed consultation durations (today) 
-  ÷ 
+Average Consultation Time =
+  Sum of all completed consultation durations (today)
+  ÷
   Number of completed consultations
 
-Estimated Wait for Patient N = 
+Estimated Wait for Patient N =
   (Queue position - 1 + (1 if in-progress)) × Average Consultation Time
 ```
 
 **Fallback:** If no consultations are completed yet, defaults to 7 minutes per patient.
 
 This means:
+
 - At 9am: uses default (7 min)
 - By 10am with 5 completed: uses real average
 - More accurate all day as data accumulates
@@ -179,7 +185,7 @@ This means:
 ## Edge Case Handling
 
 | Edge Case                  | Handling                                      |
-|----------------------------|-----------------------------------------------|
+| -------------------------- | --------------------------------------------- |
 | Duplicate token generation | Retry loop with exponential backoff (5x)      |
 | Double "Call Next" click   | Backend rejects if in-progress exists         |
 | Double "Complete" click    | Backend rejects if no in-progress             |
