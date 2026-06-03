@@ -2,7 +2,7 @@
 
 ClinIQ is a real-time clinic queue management system that helps reception staff manage tokens, notify patients, and track consultations live across screens.
 
-**Live frontend:** https://smart-clinic-queue.vercel.app/
+**Live frontend:** https://smart-clinic-queue-git-main-neerajcoder1s-projects.vercel.app/
 
 ## Features
 
@@ -30,7 +30,7 @@ npm install
 2. Configure environment variables.
 
 - Backend: `MONGODB_URI`, `FRONTEND_URL`, `PORT`
-- Frontend: `VITE_API_URL` if you are connecting to a deployed backend
+- Frontend: `VITE_BACKEND_URL` (or `VITE_API_URL`) if you are connecting to a deployed backend
 
 3. Start the development servers.
 
@@ -55,7 +55,7 @@ npm run dev
 ### Frontend
 
 - Deploy the frontend on Vercel or a similar static host
-- Set `VITE_API_URL` to your backend URL if needed
+- Set `VITE_BACKEND_URL` (or `VITE_API_URL`) to your backend URL if needed
 
 ## Project Structure
 

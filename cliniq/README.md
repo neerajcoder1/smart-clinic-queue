@@ -2,6 +2,8 @@
 
 > Replace paper tokens and shouting with a real-time digital queue that updates instantly across all screens.
 
+**Live frontend:** https://smart-clinic-queue-git-main-neerajcoder1s-projects.vercel.app/
+
 ---
 
 ## Problem Statement
