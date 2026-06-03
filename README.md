@@ -1,8 +1,10 @@
 # ClinIQ
+<img width="1919" height="873" alt="image" src="https://github.com/user-attachments/assets/27770be1-d58f-48cd-bc22-734f07dd2949" />
 
 ClinIQ is a real-time clinic queue management system that helps reception staff manage tokens, notify patients, and track consultations live across screens.
 
 **Live frontend:** https://smart-clinic-queue-git-main-neerajcoder1s-projects.vercel.app/
+<img width="1651" height="695" alt="image" src="https://github.com/user-attachments/assets/b18823ee-1edc-4757-9c3a-ff4361cdcdf6" />
 
 ## Features
 
