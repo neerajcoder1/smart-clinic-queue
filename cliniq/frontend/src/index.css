@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-slate-950 text-white font-body;
+    background-image: radial-gradient(ellipse at 20% 50%, rgba(13, 148, 136, 0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(20, 184, 166, 0.04) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-slate-900 border border-slate-800 rounded-2xl;
+  }
+
+  .card-glass {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(51, 65, 85, 0.5);
+    @apply rounded-2xl;
+  }
+
+  .btn-primary {
+    @apply bg-clinic-500 hover:bg-clinic-400 active:bg-clinic-600 text-white font-display font-semibold
+      px-6 py-3 rounded-xl transition-all duration-150 active:scale-95 select-none
+      focus:outline-none focus:ring-2 focus:ring-clinic-400 focus:ring-offset-2 focus:ring-offset-slate-900;
+  }
+
+  .btn-secondary {
+    @apply bg-slate-800 hover:bg-slate-700 active:bg-slate-900 text-slate-200 font-display font-semibold
+      px-6 py-3 rounded-xl transition-all duration-150 active:scale-95 select-none
+      border border-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-900;
+  }
+
+  .btn-danger {
+    @apply bg-rose-500 hover:bg-rose-400 active:bg-rose-600 text-white font-display font-semibold
+      px-6 py-3 rounded-xl transition-all duration-150 active:scale-95 select-none
+      focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2 focus:ring-offset-slate-900;
+  }
+
+  .btn-success {
+    @apply bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-white font-display font-semibold
+      px-6 py-3 rounded-xl transition-all duration-150 active:scale-95 select-none
+      focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-slate-900;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-semibold;
+  }
+
+  .token-display {
+    @apply font-mono font-semibold;
+  }
+}
+
+/* Live dot animation */
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.live-dot {
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(51,65,85,0.8); border-radius: 999px; }
+
+/* Number pop animation for token */
+@keyframes numberReveal {
+  0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+  80% { transform: scale(1.05) rotate(1deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.token-pop {
+  animation: numberReveal 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
