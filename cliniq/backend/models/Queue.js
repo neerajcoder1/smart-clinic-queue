@@ -1,11 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const queueSchema = new mongoose.Schema(
   {
     tokenNumber: {
       type: Number,
       required: true,
-      unique: true,
       index: true,
     },
     patientName: {
@@ -16,8 +15,8 @@ const queueSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['waiting', 'in-progress', 'completed'],
-      default: 'waiting',
+      enum: ["waiting", "in-progress", "completed"],
+      default: "waiting",
       index: true,
     },
     joinedAt: {
@@ -41,20 +40,22 @@ const queueSchema = new mongoose.Schema(
       index: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Compound index for fast queue lookups
 queueSchema.index({ status: 1, tokenNumber: 1 });
 queueSchema.index({ sessionDate: 1, status: 1 });
+// Ensure token uniqueness scoped to the session date (daily reset)
+queueSchema.index({ sessionDate: 1, tokenNumber: 1 }, { unique: true });
 
 // Auto-set sessionDate on save
-queueSchema.pre('save', function (next) {
+queueSchema.pre("save", function (next) {
   if (!this.sessionDate) {
     const d = new Date();
-    this.sessionDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    this.sessionDate = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   }
   next();
 });
 
-module.exports = mongoose.model('Queue', queueSchema);
+module.exports = mongoose.model("Queue", queueSchema);
