@@ -1,19 +1,21 @@
 const Queue = require('../models/Queue');
 const Settings = require('../models/Settings');
+const Counter = require('../models/Counter');
 
 const TODAY = () => {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 };
 
-// Get next token number with atomic-style handling
-async function getNextTokenNumber() {
-  const today = TODAY();
-  const last = await Queue.findOne({ sessionDate: today })
-    .sort({ tokenNumber: -1 })
-    .select('tokenNumber')
-    .lean();
-  return last ? last.tokenNumber + 1 : 1;
+// Atomic per-day token allocation using a counter document
+async function getNextTokenNumberAtomic() {
+  const key = `token_${TODAY()}`;
+  const res = await Counter.findOneAndUpdate(
+    { key },
+    { $inc: { v: 1 } },
+    { upsert: true, new: true }
+  ).lean();
+  return res.v;
 }
 
 // Add a new patient to the queue
@@ -24,7 +26,7 @@ async function addPatient(patientName) {
 
   while (retries < maxRetries) {
     try {
-      const tokenNumber = await getNextTokenNumber();
+      const tokenNumber = await getNextTokenNumberAtomic();
       const patient = new Queue({
         tokenNumber,
         patientName: patientName.trim(),
